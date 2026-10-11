@@ -38,3 +38,4 @@ for (const f of files) {
   }
 }
 console.log(`\nИтог: применено ${ok}, ошибок ${bad}`);
+if (bad > 0) process.exit(1);

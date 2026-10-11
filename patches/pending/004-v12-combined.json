@@ -1,0 +1,45 @@
+{
+  "name": "v12 combined: sayAll + filters + openAll + cleanup + AIN",
+  "edits": [
+    {
+      "file": "index.html",
+      "find": "function msg(t){var m=document.getElementById('msg');if(m)m.textContent=t}",
+      "replace": "function msg(t){var m=document.getElementById('msg');if(m)m.textContent=t}\nmatchFilter=function(c,raw,f){if(!raw)return true;var tokens=raw.split(/\\s+/),textQ=[];for(var i=0;i<tokens.length;i++){var tok=tokens[i].toLowerCase(),neg=false;if(tok.charAt(0)==='-'&&tok.length>1){neg=true;tok=tok.slice(1)}if(tok.indexOf('тип:')===0||tok.indexOf('type:')===0){var v=tok.slice(tok.indexOf(':')+1),ok=c.t.toLowerCase().indexOf(v)>=0;if(neg?ok:!ok)return false;continue}if(tok.indexOf('колода:')===0||tok.indexOf('deck:')===0||tok.indexOf('серия:')===0){var v2=norm(tok.slice(tok.indexOf(':')+1)),ok2=norm(c.src).indexOf(v2)>=0;if(neg?ok2:!ok2)return false;continue}if(tok.indexOf('state:')===0){var sv=tok.slice(6),okS=false;if(sv==='new'||sv==='0')okS=(c.state===0);else if(sv==='learn'||sv==='learning'||sv==='1'||sv==='3')okS=(c.state===1||c.state===3);else if(sv==='review'||sv==='2')okS=(c.state===2);else if(sv==='leech')okS=!!c.susp;else if(sv==='star')okS=!!c.star;else if(sv==='mature')okS=(c.state===2&&c.ivl>=21);if(neg?okS:!okS)return false;continue}if(tok.indexOf('due:')===0){var dv=tok.slice(4),now=Date.now(),t1=addD(today(),1)-1,t7=addD(today(),7),okD=false;if(dv==='today')okD=(c.state===2&&c.due<=t1);else if(dv==='overdue'||dv==='now')okD=(c.state===2&&c.due<=now);else if(dv==='week')okD=(c.due>0&&c.due<=t7);else if(dv==='new')okD=(c.state===0);if(neg?okD:!okD)return false;continue}var mL=tok.match(/^lapses([><=]+)(\\d+)$/);if(mL){var op=mL[1],vl=+mL[2],lap=c.lapses||0,okL=(op==='>'?lap>vl:op==='>='?lap>=vl:op==='<'?lap<vl:op==='<='?lap<=vl:op==='='?lap===vl:false);if(neg?okL:!okL)return false;continue}var mE=tok.match(/^ease([><=]+)([\\d.]+)$/);if(mE){var op2=mE[1],ve=+mE[2],e=c.ease||0,okE=(op2==='>'?e>ve:op2==='>='?e>=ve:op2==='<'?e<ve:op2==='<='?e<=ve:op2==='='?e===ve:false);if(neg?okE:!okE)return false;continue}if(tok==='star'){if(neg?c.star:!c.star)return false;continue}textQ.push(tok)}if(!textQ.length)return true;var q=norm(textQ.join(' '));if(!q)return true;return norm(c.en+' '+c.ru+' '+c.ex+' '+c.note+' '+c.my+' '+c.t+' '+c.src).indexOf(q)>=0};\nAIN+=\"\\n\\n## 9. Синтаксис расширенного поиска (v12)\\n- Текст: любое слово — ищет в фразе, переводе, примере, заметке.\\n- тип:идиома / тип:глагол — по типу.\\n- колода:Charlie — по источнику.\\n- state:new / state:learn / state:review / state:leech / state:star / state:mature — по состоянию.\\n- due:today / due:overdue / due:week — по сроку.\\n- lapses>N, ease<N — числовые условия.\\n- Префикс минус исключает: -колода:Charlie, -state:leech.\\n- Комбинируется: state:leech -колода:Charlie.\\n\\n## 10. Что нового в v12\\n- Плашка Доступна новая версия (SW + уведомление).\\n- Озвучка списка на вкладке Перед (Озвучить / Стоп).\\n- Расширенные фильтры (раздел 9).\\n- Скрытые разделы настроек и справки по умолчанию (настройка в разделе Интерфейс).\\n- Исправлен алгоритм переобучения.\\n- Каскадная очистка прогресса при удалении карточек.\\n- Anki-экспорт без HTML-escape.\\n- Удалён устаревший код.\\n\";\nvar sayQ=null;function sayAll(us){pq++;var my=pq;sayQ={us:us.slice(),i:0,my:my};function step(){if(!sayQ||sayQ.my!==pq||sayQ.i>=sayQ.us.length){if(sayQ&&sayQ.my===pq)sayQ=null;return}var c=byU(sayQ.us[sayQ.i]);if(!c){sayQ.i++;step();return}try{var u=new SpeechSynthesisUtterance(c.en);u.lang='en-US';u.rate=.9;u.onend=function(){if(sayQ&&sayQ.my===pq){sayQ.i++;setTimeout(step,400)}else{sayQ=null}};u.onerror=function(){if(sayQ&&sayQ.my===pq){sayQ.i++;step()}else{sayQ=null}};speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){sayQ=null}}step()}"
+    },
+    {
+      "file": "index.html",
+      "find": "H.pstop=function(){pq++;try{speechSynthesis.cancel()}catch(e){}};",
+      "replace": "H.pstop=function(){pq++;sayQ=null;try{speechSynthesis.cancel()}catch(e){}};"
+    },
+    {
+      "file": "index.html",
+      "find": "revealFirst:0,focus:1,filtersHidden:0",
+      "replace": "revealFirst:0,focus:1,openAll:0,filtersHidden:0"
+    },
+    {
+      "file": "index.html",
+      "find": "else if(t==='set')el.innerHTML=sett();_tabRendered[t]=true;afterRenderPane(t)}",
+      "replace": "else if(t==='set')el.innerHTML=sett();if(!S.set.openAll&&(t==='st'||t==='set'||t==='how')){var _d=el.querySelectorAll('details[open]');for(var _i=0;_i<_d.length;_i++)_d[_i].removeAttribute('open')}_tabRendered[t]=true;afterRenderPane(t)}"
+    },
+    {
+      "file": "index.html",
+      "find": ",S.theme)+'</div>'",
+      "replace": ",S.theme)+'</div><div class=\"fld\"><label>Раскрывать разделы</label>'+sel('s_oa',[[0,'Нет, свёрнуты'],[1,'Да, раскрыты']],S.set.openAll)+'</div>'"
+    },
+    {
+      "file": "index.html",
+      "find": "S.set.uiCompact=+g('s_uc');",
+      "replace": "S.set.uiCompact=+g('s_uc');S.set.openAll=+g('s_oa');"
+    },
+    {
+      "file": "index.html",
+      "find": "cm='flip',manP=false,EX=null,exH=null",
+      "replace": "cm='flip',EX=null,exH=null"
+    },
+    {
+      "file": "index.html",
+      "find": "H.pm=function(){manP=!manP;armed='';invalidateTab('set');switchTab('set')};",
+      "replace": ""
+    }
+  ]
+}

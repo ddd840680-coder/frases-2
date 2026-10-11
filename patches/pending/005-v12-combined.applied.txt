@@ -1,0 +1,1 @@
+2026-10-11T09:42:46.397Z — v12 combined: sayAll + filters + openAll + cleanup + AIN (fix)

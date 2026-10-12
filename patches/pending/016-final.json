@@ -1,0 +1,70 @@
+{
+  "name": "v13.3: примеры в карточке + AIN + О приложении + анимация",
+  "edits": [
+    {
+      "file": "index.html",
+      "find": "if(S.set.focus&&!uiExpanded&&!toolsOpen){h+='<div class=\"mode\" style=\"margin-top:14px\"><button type=\"button\" class=\"chip\" title=\"Озвучить (R)\" data-a=\"sp\">🔊</button><button type=\"button\" class=\"chip\" title=\"Ещё\" data-a=\"tl\">⋯</button></div>'}",
+      "replace": "if(S.set.focus&&!uiExpanded&&!toolsOpen){h+='<div class=\"mode\" style=\"margin-top:14px\"><button type=\"button\" class=\"chip\" title=\"Озвучить (R)\" data-a=\"sp\">🔊</button>'+exSheetBtn(c)+'<button type=\"button\" class=\"chip\" title=\"Ещё\" data-a=\"tl\">⋯</button></div>'}"
+    },
+    {
+      "file": "index.html",
+      "find": "}else{h+='<div class=\"mode\" style=\"margin-top:14px\"><button type=\"button\" class=\"chip\" title=\"Озвучить (R)\" data-a=\"sp\">🔊</button><button type=\"button\" class=\"chip\" title=\"Избранное\" data-a=\"st\">",
+      "replace": "}else{h+='<div class=\"mode\" style=\"margin-top:14px\"><button type=\"button\" class=\"chip\" title=\"Озвучить (R)\" data-a=\"sp\">🔊</button>'+exSheetBtn(c)+'<button type=\"button\" class=\"chip\" title=\"Избранное\" data-a=\"st\">"
+    },
+    {
+      "file": "index.html",
+      "find": "var sayQ=null;function sayAll(us){",
+      "replace": "function exSheetBtn(c){var a=(c.exs&&c.exs.length)?c.exs:(c.ex?[c.ex]:[]);if(!a.length)return'';return'<button type=\"button\" class=\"chip\" title=\"Примеры\" data-a=\"exSheet\" data-v=\"'+esc(c.u)+'\">💡 '+a.length+'</button>'}\nvar sayQ=null;function sayAll(us){"
+    },
+    {
+      "file": "index.html",
+      "find": "AIN+=\"\\n\\n## 9. Синтаксис расширенного поиска (v12)",
+      "replace": "AIN+=\"\\n\\n## 9А. Работа с примерами (v13)\\n- В каждой карточке есть список примеров (поле exs) — можно хранить много разных контекстов.\\n- В карточке повтора кнопка 💡 открывает bottom-sheet со всеми примерами: добавить, редактировать, удалить, найти фразу в других колодах.\\n- Клик по примеру в колоде ротирует (переключает на следующий).\\n- Экспорт для ИИ: ⚙ → 💾 или Добавить → 🤖. Скопируй список фраз → попроси ИИ дать примеры → вставь обратно через «Импорт ответа ИИ».\\n- Формат ответа ИИ: одна строка = один пример, разделитель «|», «фраза | пример».\\n\\n## 9. Синтаксис расширенного поиска (v12)"
+    },
+    {
+      "file": "index.html",
+      "find": "<details><summary>ℹ️ О приложении</summary><div class=\"note\" style=\"margin-top:0\">Версия <b>'+APP_VER+'</b> · схема данных <b>'+SCHEMA+'</b></div><div class=\"note\">Что нового в 11: подсветка раздела внизу и в меню работает, оценка появляется сразу после нажатия на карточку, «Мой пример» и «Заметка» свёрнуты, фокус-режим скрывает лишнее, свайп не срабатывает при вводе текста. Ранее: учёт просрочки как в Anki, счётчик пиявок, импорт .srt, слияние копий, корзина, авто-бэкапы, мягкий режим после перерыва, диагностика.</div></details>",
+      "replace": "<details><summary>ℹ️ О приложении</summary><div class=\"note\" style=\"margin-top:0\">Версия <b>'+APP_VER+'</b> · схема данных <b>'+SCHEMA+'</b></div><div class=\"note\"><b>v13:</b> примеры в карточках (много контекстов, ротация, bottom-sheet), ИИ-цикл обогащения примерами, плашка «Доступна новая версия», расширенные фильтры поиска (state:, due:, lapses>, ex:, ease<).</div><div class=\"note\"><b>v12:</b> озвучка списка на вкладке Перед, скрытые разделы настроек по умолчанию, кнопка «Раскрывать разделы», исправлен алгоритм переобучения (Трудно не сбрасывает шаг), каскадная очистка прогресса.</div><div class=\"note\"><b>Ранее:</b> учёт просрочки как в Anki, счётчик пиявок, импорт .srt, слияние копий, корзина на 30 дней, авто-бэкапы, мягкий режим после перерыва, диагностика, фокус-режим, свайпы и горячие клавиши.</div></details>"
+    },
+    {
+      "file": "index.html",
+      "find": ".btn:active,.chip:active,.tab:active{transform:scale(.96)}",
+      "replace": ".btn:active,.chip:active,.tab:active{transform:scale(.93);filter:brightness(.94);transition-duration:.03s}"
+    },
+    {
+      "file": "index.html",
+      "find": ".btn,.chip,.tab{border:0;font:inherit;cursor:pointer;color:var(--ink);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .1s,background .15s,box-shadow .15s,color .15s}",
+      "replace": ".btn,.chip,.tab{border:0;font:inherit;cursor:pointer;color:var(--ink);touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .16s ease-out,background .15s,box-shadow .15s,color .15s}"
+    },
+    {
+      "file": "index.html",
+      "find": ".ex-sheet{position:fixed;inset:0;background:rgba(30,20,15,.5);z-index:40;display:flex;align-items:flex-end;justify-content:center}",
+      "replace": ".ex-sheet{position:fixed;inset:0;background:rgba(30,20,15,.5);z-index:40;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .18s ease-out}@keyframes fadeIn{from{opacity:0}to{opacity:1}}"
+    },
+    {
+      "file": "index.html",
+      "find": ".ex-sheet-inner{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:80vh;overflow-y:auto;animation:slideUp .25s ease}",
+      "replace": ".ex-sheet-inner{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:80vh;overflow-y:auto;animation:sheetUp .28s cubic-bezier(.22,1,.36,1)}@keyframes sheetUp{from{transform:translateY(40px);opacity:.6}to{transform:translateY(0);opacity:1}}"
+    },
+    {
+      "file": "index.html",
+      "find": "m.id='exAddModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px';",
+      "replace": "m.id='exAddModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .18s ease-out';"
+    },
+    {
+      "file": "index.html",
+      "find": "m.id='exImportModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px';",
+      "replace": "m.id='exImportModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .18s ease-out';"
+    },
+    {
+      "file": "index.html",
+      "find": "m.id='exBulkModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px';",
+      "replace": "m.id='exBulkModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .18s ease-out';"
+    },
+    {
+      "file": "index.html",
+      "find": "m.id='inputModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.5);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px'",
+      "replace": "m.id='inputModal';m.style.cssText='position:fixed;inset:0;background:rgba(30,20,15,.5);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .18s ease-out'"
+    }
+  ]
+}

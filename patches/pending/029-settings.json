@@ -1,0 +1,45 @@
+{
+  "name": "v14.6: сгруппировать настройки в 4 раздела",
+  "edits": [
+    {
+      "file": "index.html",
+      "find": "details[open] > summary{padding-bottom:10px}",
+      "replace": "details[open] > summary{padding-bottom:10px}details > details{padding:0 12px;background:var(--bg2);box-shadow:none;border-color:transparent}"
+    },
+    {
+      "file": "index.html",
+      "find": "function mixHtml(){return'<div class=\"note\"><b>🎲 Режимы в Миксе</b></div><div class=\"mode scroll\">",
+      "replace": "function mixHtml(){return'<div class=\"mode scroll\">"
+    },
+    {
+      "file": "index.html",
+      "find": "var h='<details open><summary>🎛 Настройки алгоритма</summary>",
+      "replace": "var h='<details><summary>📚 Обучение</summary><details open><summary>🎛 Параметры алгоритма</summary>"
+    },
+    {
+      "file": "index.html",
+      "find": "}).join('')+'</details>';h+='<details open><summary>🎨 Интерфейс</summary>",
+      "replace": "}).join('')+'</details>';h+='<details><summary>🎲 Режимы в Миксе</summary>'+mixHtml()+'</details>';h+='</details>';h+='<details><summary>🎨 Интерфейс</summary>"
+    },
+    {
+      "file": "index.html",
+      "find": "'</div>';h+=mixHtml();\nvar sw=getSWStatus();",
+      "replace": "'</div>';\nvar sw=getSWStatus();"
+    },
+    {
+      "file": "index.html",
+      "find": "h+='<details><summary>📶 Офлайн-режим</summary>';",
+      "replace": "h+='<details><summary>⚙ Прочее</summary><details><summary>📶 Офлайн-режим</summary>';"
+    },
+    {
+      "file": "index.html",
+      "find": "</button></div></details>';h+='<details open><summary>💾 Резервная копия</summary>",
+      "replace": "</button></div></details>';h+='</details>';h+='<details><summary>💾 Данные</summary><details open><summary>📦 Резервная копия</summary>"
+    },
+    {
+      "file": "index.html",
+      "find": "h+=settExtra();h+='<div class=\"row\"><button type=\"button\" class=\"btn b0\" data-a=\"rs\">",
+      "replace": "h+=settExtra();h+='</details>';h+='<div class=\"row\"><button type=\"button\" class=\"btn b0\" data-a=\"rs\">"
+    }
+  ]
+}
